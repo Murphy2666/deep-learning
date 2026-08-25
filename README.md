@@ -14,6 +14,7 @@ A from-scratch implementation of a deep neural network for MNIST digit classific
 .
 ├── data/
 │   └── mnist.pkl.gz              # MNIST dataset file
+├── avg_darkness_classifier.py    # simple classifier using avg darkness 
 ├── mnist_loader.py               # Data loading & format 
 ├── network.py                    # Baseline network (element x)
 ├── debug_network.py              # Debug Baseline network
