@@ -1,6 +1,6 @@
 # Deep Learning - MNIST Digit Classification
 
-A from-scratch implementation of a deep neural network for MNIST digit classification only using **numpy**.
+A from-scratch implementation of a FNN (feedforward neural network) for MNIST digit classification only using **numpy**.
 
 ## File Descriptions
 
