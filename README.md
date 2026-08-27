@@ -21,4 +21,8 @@ A from-scratch implementation of a FNN (feedforward neural network) for MNIST di
 ├── run_network.py                # Baseline network training
 ├── network_optimized.py          # Fully vectorized network (matrix mini-batch)
 ├── debug_network_optimized.py    # Debug optimized network
-└── run_network_optimized.py      # Optimized network training
+├── run_network_optimized.py      # Optimized network training
+├── network2.py                   # Vectorized network using cross-entropy loss
+└── debug_network2.py             # Debug cross-entropy network
+
+
