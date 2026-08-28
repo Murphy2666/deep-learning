@@ -9,8 +9,8 @@ training_data, validation_data, test_data = mnist_loader.load_wrapper()
 
 mini_batch = [(training_data[0][0], training_data[0][1])]
 
-# mini_batch = [(training_data[0][0], training_data[0][1])
-#              ,(training_data[1][0], training_data[1][1])]
+mini_batch = [(training_data[0][0], training_data[0][1])
+             ,(training_data[1][0], training_data[1][1])]
 
 
 xs = np.hstack([x for (x,_) in mini_batch])
@@ -25,8 +25,8 @@ for i in range(100):
 
     if i%20 == 0:
         p_ys = net.feed_forward_trained_model(xs)
-        loss = sum((p_ys - ys)**2)
-        print(f"Epoch{i}: loss = {loss}")
+        loss = sum(np.sum((p_ys - ys)**2, axis = 0))
+        print(f"Epoch{i}: l2_loss = {loss}")
 
 
 

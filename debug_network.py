@@ -18,5 +18,5 @@ for i in range(100):
 
     if i%20 ==0:
         loss = sum((net.feed_forward_trained_model(x_train) - y_train) **2)
-        print(f"epoch{i}: loss = {loss}")
+        print(f"epoch{i}: l2 loss = {loss}")
     
