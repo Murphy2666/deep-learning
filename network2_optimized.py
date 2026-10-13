@@ -1,8 +1,29 @@
 import numpy as np
 import random
 
-class Network:
-    def __init__(self, sizes, cost = CrossEntropyCost):
+
+''' cost func '''
+class CrossEntropy:
+    @staticmethod
+    def fn(p_ys, ys):
+        p_ys = np.clip(p_ys, 1e-15, 1-1e-15)
+        return np.sum(-ys * np.log(p_ys) - (1-ys) * np.log(1-p_ys))
+
+    def delta(p_y, y, z):
+        return (p_y - y)
+    
+
+class QuadaticCost:
+    @staticmethod
+    def fn(p_ys, ys):
+        return np.sum(0.5*((p_ys - ys)**2))
+
+    def delta(p_y, y, z):
+        return (p_y - y)*sigmoid_prime(z)
+
+
+class network:
+    def __init__(self, sizes, cost = CrossEntropy):
         self.num_layers = len(sizes)
         self.sizes = sizes
         self.default_weight_initializer()
@@ -42,28 +63,27 @@ class Network:
                 self.biases = [b - eta/len(mini_batch) *n_b for (b, n_b) in zip(self.biases, nabla_b)]
             print(f"epoch_{j} training completed") 
 
-        if monitor_training_cost:
-            cost = self.total_cost(training_data, lmbda, convert = False)
-            training_cost.append(cost)
-            print(f"training_data cost = {cost}")
+            if monitor_training_cost:
+                cost = self.total_cost(training_data, lmbda, convert = False)
+                training_cost.append(cost)
+                print(f"training_data cost = {cost}")
 
-        if monitor_training_accuracy:
-            accuracy = self.accuracy(training_data, convert = True)
-            training_accuracy.append(accuracy)
-            print(f"training_data accuracy = {accuracy} / {len(training_data)}")
+            if monitor_training_accuracy:
+                accuracy = self.accuracy(training_data, convert = True)
+                training_accuracy.append(accuracy)
+                print(f"training_data accuracy = {accuracy} / {len(training_data)}")
 
-        if monitor_evaluation_cost:
-            cost = self.total_cost(evaluation_data, lmbda, convert = True)
-            evaluation_cost.append(cost)
-            print(f"evaluation_data cost = {cost}")
+            if monitor_evaluation_cost:
+                cost = self.total_cost(evaluation_data, lmbda, convert = True)
+                evaluation_cost.append(cost)
+                print(f"evaluation_data cost = {cost}")
 
-        if monitor_evaluation_accuracy:
-            accuracy = self.accuracy(evaluation_data, convert = False)
-            evaluation_accuracy.append(accuracy)
-            print(f"evaluation_data accuracy = {accuracy} / {len(evaluation_data)}")
+            if monitor_evaluation_accuracy:
+                accuracy = self.accuracy(evaluation_data, convert = False)
+                evaluation_accuracy.append(accuracy)
+                print(f"evaluation_data accuracy = {accuracy} / {len(evaluation_data)}")
 
         return training_cost, training_accuracy, evaluation_cost, evaluation_accuracy
-
 
 
     def update_mini_batch(self, mini_batch):
@@ -90,12 +110,10 @@ class Network:
         
         for l in range(2, self.num_layers):
             delta = np.dot(self.weights[-l+1].transpose(), delta) * sigmoid_prime(zs[-l])
-            nabla_b[-l] = np.sum(delta, axis = 1, kee = True) / len(mini_batch)
+            nabla_b[-l] = np.sum(delta, axis = 1, keepdims=True) / len(mini_batch)
             nabla_w[-l] = np.dot(delta, activations[-l-1].transpose()) / len(mini_batch)
 
         return nabla_w, nabla_b 
-
-
 
 
     def accuracy(self, data, convert = False):
@@ -128,29 +146,9 @@ class Network:
         return cost
 
 
-''' cost func '''
-class CrossEntropy:
-    @staticmethod
-    def fn(p_ys, ys):
-        p_y = np.clip(p_y, 1e-15, 1-1e-15)
-        return np.sum(-ys * np.log(p_ys) - (1-ys) * np.log(1-p_ys))
-
-    def delta(p_y, y, z):
-        return (p_y - y)
-    
-
-class QuadaticCost:
-    @staticmethod
-    def fn(p_ys, ys):
-        return np.sum(0.5*((p_ys - ys)**2))
-
-    def delta(p_y, y, z):
-        return (p_y - y)*sigmoid_prime(z)
-
-
 ''' others '''
 def one_hot(y):
-    one_hot = np.zeros(10,1)
+    one_hot = np.zeros((10,1))
     one_hot[y] = 1
     return one_hot
     
@@ -158,7 +156,7 @@ def sigmoid(z):
     return 1.0/(1.0+np.exp(-z))
 
 def sigmoid_prime(z):
-    return sigmoid*(1-sigmoid(z))
+    return sigmoid(z)*(1-sigmoid(z))
 
 
 
