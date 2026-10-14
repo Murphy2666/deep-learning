@@ -13,7 +13,7 @@ training_data, validation_data, test_data = mnist_loader.load_wrapper()
 # train
 
 net = network2_optimized.network([784, 30, 10], cost = network2_optimized.CrossEntropy)
-net.large_weight_initializer
+net.large_weight_initializer()
 
 net.SGD(training_data = training_data
         ,mini_batch_size = 30
