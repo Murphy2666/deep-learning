@@ -137,12 +137,12 @@ class network:
         xs =  np.hstack([x for (x,_) in data])
         p_ys = self.feed_forward_trained_model(xs)
         if convert:
-            ys = [one_hot(y) for (_,y) in data]
+            ys = np.hstack([one_hot(y) for (_,y) in data])
         else:
-            ys = [y for (_,y) in data]
+            ys = np.hstack([y for (_,y) in data])
         cost = (self.cost).fn(p_ys, ys) / len(data)
         # L2 regularization
-        cost += 0.5*(lmbda/len(data))*sum([w**2 for w in self.weights])
+        cost += 0.5 * (lmbda / len(data)) * sum(np.sum(w**2) for w in self.weights)
         return cost
 
 
