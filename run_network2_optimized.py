@@ -35,7 +35,7 @@ elapsed_time = end_time - start_time
 print(f"total run time: {elapsed_time} scds")
 
 
-# plt
+# plt: training accuracy & test accuracy
 plt.figure(figsize=(10, 5))
 plt.plot(training_accuracy, label="Training Accuracy")
 plt.plot(evaluation_accuracy, label="Evaluation Accuracy")
