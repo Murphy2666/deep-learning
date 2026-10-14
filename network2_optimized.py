@@ -9,6 +9,7 @@ class CrossEntropy:
         p_ys = np.clip(p_ys, 1e-15, 1-1e-15)
         return np.sum(-ys * np.log(p_ys) - (1-ys) * np.log(1-p_ys))
 
+    @staticmethod
     def delta(p_y, y, z):
         return (p_y - y)
     
@@ -18,6 +19,7 @@ class QuadaticCost:
     def fn(p_ys, ys):
         return np.sum(0.5*((p_ys - ys)**2))
 
+    @staticmethod
     def delta(p_y, y, z):
         return (p_y - y)*sigmoid_prime(z)
 
@@ -70,7 +72,7 @@ class network:
 
             if monitor_training_accuracy:
                 accuracy = self.accuracy(training_data, convert = True)
-                training_accuracy.append(accuracy)
+                training_accuracy.append(accuracy / len(training_data))
                 print(f"training_data accuracy = {accuracy} / {len(training_data)}")
 
             if monitor_evaluation_cost:
@@ -80,7 +82,7 @@ class network:
 
             if monitor_evaluation_accuracy:
                 accuracy = self.accuracy(evaluation_data, convert = False)
-                evaluation_accuracy.append(accuracy)
+                evaluation_accuracy.append(accuracy / len(evaluation_data))
                 print(f"evaluation_data accuracy = {accuracy} / {len(evaluation_data)}")
 
         return training_cost, training_accuracy, evaluation_cost, evaluation_accuracy
