@@ -2,27 +2,37 @@
 
 A from-scratch implementation of a FNN (feedforward neural network) for MNIST digit classification only using **numpy**.
 
-## File Descriptions
-
-* **`mnist_loader.py`**: Data loading and preprocessing module.
-* **`network.py`**, **`debug_network.py`**, **`run_network.py`**: Baseline implementation processing training samples individually (one input vector $x$ at a time).
-* **`network_optimized.py`**, **`debug_network_optimized.py`**, **`run_network_optimized.py`**: Fully vectorized matrix implementation processing full mini-batches in parallel. Runs ~4x faster than the baseline version.
-
 ## File Structure
-
 ```text
-.
-├── data/
-│   └── mnist.pkl.gz              # MNIST dataset file
-├── avg_darkness_classifier.py    # simple classifier using avg darkness 
-├── mnist_loader.py               # Data loading & format 
-├── network.py                    # Baseline network (element x)
-├── debug_network.py              # Debug Baseline network
-├── run_network.py                # Baseline network training
-├── network_optimized.py          # Fully vectorized network (matrix mini-batch)
-├── debug_network_optimized.py    # Debug optimized network
-├── run_network_optimized.py      # Optimized network training
-├── network2.py                   # Vectorized network using cross-entropy loss
-└── debug_network2.py             # Debug cross-entropy network
-
-
+001_classify_digits/
+│
+├── core/                         
+│   ├── __init__.py               
+│   ├── mnist_loader.py           # MNIST dataset loader
+│   ├── network.py                # Basic FNN 
+│   ├── network_optimized.py      # Vectorized version of basic 
+│   ├── network2.py               # Extended FNN with cross-entropy, L2 regularization
+│   └── network2_optimized.py     # Optimized version of network2 (weight initiate, etc.)
+│
+├── experiments/                  
+│   ├── exp_crossentropy_vs_mse.py        # Cross-Entropy vs. Quadratic Cost 
+│   ├── exp_regularization_comparison.py  # L2 Regularization vs. No Regularization 
+│   └── exp_weight_init_comparison.py     # Weight initialization impact 
+│
+├── scripts/                      
+│   ├── avg_darkness_classifier.py        # Simple baseline classifier using average pixel darkness
+│   ├── run_network.py                    # Runner script for basic network
+│   ├── run_network_practise.py           # Practice script
+│   └── run_network2_optimized.py         # Runner script for optimized network2
+│
+├── debug/                        
+│   ├── debug_network.py
+│   ├── debug_network2.py
+│   └── debug_network2_optimized.py
+│   ├── debug_network_optimized.py
+│
+├── data/                         
+│   └── mnist.pkl.gz              # Dataset storage
+│
+├── .gitignore                    
+└── README.md
