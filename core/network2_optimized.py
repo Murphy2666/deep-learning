@@ -28,9 +28,10 @@ class network:
     def __init__(self, sizes, cost = CrossEntropy):
         self.num_layers = len(sizes)
         self.sizes = sizes
-        self.default_weight_initializer()
+        self.default_weight_initializer() # Xa
         self.cost = cost
 
+    # Initialize weights using the standard normal distribution scaled by 1/sqrt(n)
     def default_weight_initializer(self):
         self.biases = [np.random.randn(y, 1) for y in self.sizes[1:]]
         self.weights = [np.random.randn(y, x)/np.sqrt(x) for (x,y) in zip(self.sizes[:-1], self.sizes[1:])]
@@ -60,8 +61,9 @@ class network:
             mini_batches = [training_data[k:k+mini_batch_size] for k in range(0, len(training_data), mini_batch_size)]
             for mini_batch in mini_batches:
                 nabla_w, nabla_b = self.update_mini_batch(mini_batch)
+                # weight decay
                 self.weights = [(1 - lmbda*eta/len(training_data))* w - eta/len(mini_batch)*n_w for (w, n_w) in zip(self.weights, nabla_w)]
-                #nb is the sum of all samples' nb
+                # nb is the sum of all samples' nb
                 self.biases = [b - eta/len(mini_batch) *n_b for (b, n_b) in zip(self.biases, nabla_b)]
             print(f"epoch_{j} training completed") 
 

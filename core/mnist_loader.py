@@ -5,7 +5,7 @@ import os
 import numpy as np
 
 path = os.path.join(
-    os.path.dirname(__file__),
+    os.path.dirname(os.path.dirname(__file__)),  # use 'dirname; twice 从 core/ 退回到根目录
     "data",
     "mnist.pkl.gz"
 )

@@ -1,6 +1,9 @@
-import mnist_loader
+# Run this script from the project root using:
+# python -m debug.debug_network2
 
-import network2
+from core import mnist_loader
+
+from core import network2
 
 import numpy as np
 

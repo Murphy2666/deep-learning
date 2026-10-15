@@ -1,6 +1,9 @@
-import mnist_loader
+# Run this script from the project root using:
+# python -m scripts.run_network2_optimized
 
-import network2_optimized
+from core import mnist_loader
+
+from core import network2_optimized
 
 import time
 
@@ -15,10 +18,9 @@ training_data, validation_data, test_data = mnist_loader.load_wrapper()
 # train
 
 net = network2_optimized.network([784, 30, 10], cost = network2_optimized.CrossEntropy)
-net.large_weight_initializer()
 
 training_cost, training_accuracy, evaluation_cost, evaluation_accuracy = net.SGD(training_data = training_data
-        ,mini_batch_size = 30
+        ,mini_batch_size = 10
         ,epochs = 100
         ,eta = 0.5
         ,lmbda = 5.0

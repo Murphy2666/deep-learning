@@ -1,9 +1,12 @@
+# Run this script from the project root using:
+# python -m scripts.avg_darkness_classifier
+
 #### Libraries
 # Standard libarary
 from collections import defaultdict
 
 # My libraries
-import mnist_loader
+from core import mnist_loader
 
 """ return an average darkness of digit 0 to 9 of training data """
 def avg_darkness(training_data):

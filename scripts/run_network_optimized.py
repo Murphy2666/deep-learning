@@ -1,6 +1,9 @@
-import mnist_loader
+# Run this script from the project root using:
+# python -m scripts.run_network_optimized
 
-import network_optimized
+from core import mnist_loader
+
+from core import network_optimized
 
 import time
 

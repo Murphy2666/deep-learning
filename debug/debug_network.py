@@ -1,7 +1,10 @@
+# Run this script from the project root using:
+# python -m debug.debug_network
+
 import numpy as np
 
-import mnist_loader
-import network
+from core import mnist_loader
+from core import network
 
 training_data, validation_data, test_data = mnist_loader.load_wrapper()
 

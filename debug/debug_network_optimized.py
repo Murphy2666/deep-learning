@@ -1,7 +1,10 @@
+# Run this script from the project root using:
+# python -m debug.debug_network_optimized
+
 import numpy as np
 
-import mnist_loader
-import network_optimized
+from core import mnist_loader
+from core import network_optimized
 
 training_data, validation_data, test_data = mnist_loader.load_wrapper()
 # 2 samples: [(x, y), (x, y)], both train and test
