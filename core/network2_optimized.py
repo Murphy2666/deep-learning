@@ -23,13 +23,33 @@ class QuadaticCost:
     def delta(p_y, y, z):
         return (p_y - y)*sigmoid_prime(z)
 
+''' regularization func '''
+class L1_penalty:
+    @staticmethod
+    def fn(lmbda, data, weights):
+        return (lmbda / len(data)) * sum(np.abs(w**2) for w in weights)
+
+    @staticmethod
+    def decay_factor(lmbda, eta, data, w):
+        return w - lmbda*eta/len(data)*np.sign(w)
+
+class L2_penalty:
+    @staticmethod
+    def fn(lmbda, data, weights):
+        return 0.5 * (lmbda / len(data)) * sum(np.sum(w**2) for w in weights)
+
+    @staticmethod
+    def decay_factor(lmbda, eta, data, w):
+        return (1 - lmbda*eta/len(data))*w
+
 
 class network:
-    def __init__(self, sizes, cost = CrossEntropy):
+    def __init__(self, sizes, cost = CrossEntropy, regularization = L2_penalty):
         self.num_layers = len(sizes)
         self.sizes = sizes
         self.default_weight_initializer() # Xa
         self.cost = cost
+        self.regularization = regularization
 
     # Initialize weights using the standard normal distribution scaled by 1/sqrt(n)
     def default_weight_initializer(self):
@@ -46,7 +66,7 @@ class network:
         return xs
 
     def SGD(self, training_data, mini_batch_size, epochs, eta,
-            lmbda = 0.0, # L2 regularization
+            lmbda = 0.0, # L1 / L2 regularization
             evaluation_data = None,
             monitor_training_cost = False,
             monitor_training_accuracy = False,
@@ -61,8 +81,8 @@ class network:
             mini_batches = [training_data[k:k+mini_batch_size] for k in range(0, len(training_data), mini_batch_size)]
             for mini_batch in mini_batches:
                 nabla_w, nabla_b = self.update_mini_batch(mini_batch)
-                # weight decay
-                self.weights = [(1 - lmbda*eta/len(training_data))* w - eta/len(mini_batch)*n_w for (w, n_w) in zip(self.weights, nabla_w)]
+                # regularization weight decay 
+                self.weights = [self.regularization.decay_factor(lmbda, eta, training_data, w) - eta/len(mini_batch)*n_w for (w, n_w) in zip(self.weights, nabla_w)]
                 # nb is the sum of all samples' nb
                 self.biases = [b - eta/len(mini_batch) *n_b for (b, n_b) in zip(self.biases, nabla_b)]
             print(f"epoch_{j} training completed") 
@@ -144,9 +164,9 @@ class network:
             ys = np.hstack([one_hot(y) for (_,y) in data])
         else:
             ys = np.hstack([y for (_,y) in data])
-        cost = (self.cost).fn(p_ys, ys) / len(data)
-        # L2 regularization
-        cost += 0.5 * (lmbda / len(data)) * sum(np.sum(w**2) for w in self.weights)
+        cost = (self.cost).fn(p_ys, ys) / len(data) 
+        # regularization penalty
+        cost += (self.regularization).fn(lmbda, data, self.weights)
         return cost
 
 
